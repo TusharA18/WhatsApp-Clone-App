@@ -4,6 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import connectToDB from "./database/db.js";
 import routes from "./routes/route.js";
+import bodyParser from "body-parser";
 
 // configuration
 dotenv.config();
@@ -14,6 +15,8 @@ const port = process.env.PORT || 5001;
 // middleware
 app.use(cors());
 app.use(morgan("common"));
+app.use(bodyParser.json({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // routes
 app.use("/", routes);

@@ -1,0 +1,16 @@
+{
+  "aud": "268041716565-6s09c76ih0ucn2moi918q72qhvckqk65.apps.googleusercontent.com",
+  "azp": "268041716565-6s09c76ih0ucn2moi918q72qhvckqk65.apps.googleusercontent.com",
+  "email": "tusharawasthi81@gmail.com",
+  "email_verified": true,
+  "exp": 1687776280,
+  "family_name": "Awasthi",
+  "given_name": "Tushar",
+  "iat": 1687772680,
+  "iss": "https://accounts.google.com",
+  "jti": "de41b2d55848ba95b06ac3e7e02bb14703986ebb",
+  "name": "Tushar Awasthi",
+  "nbf": 1687772380,
+  "picture": "https://lh3.googleusercontent.com/a/AAcHTtfduBugxoqhtQS1otPmJebMp9IeSPNReJp8gOVphA=s96-c",
+  "sub": "109507572400024200044"
+}
