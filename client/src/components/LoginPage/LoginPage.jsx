@@ -57,7 +57,7 @@ const LoginPage = () => {
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  background-color: rgb(232, 234, 237);
+  background-color: rgb(225, 225, 222);
   color: white;
   overflow: hidden;
 `;
@@ -100,6 +100,10 @@ const ContentBox = styled.div`
   -moz-box-shadow: 0px 0px 10px 0px rgba(147, 139, 139, 0.75);
   display: flex;
   color: rgb(80, 96, 106);
+
+  @media (min-width: 1600px) {
+    height: 45vh;
+  }
 `;
 
 const Left = styled.div`
