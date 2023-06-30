@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   nbf: { type: String },
   picture: { type: String, required: true },
-  sub: { type: Number, required: true },
+  sub: { type: String, required: true },
 });
 
 const User = mongoose.model("user", userSchema);

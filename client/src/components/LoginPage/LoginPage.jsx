@@ -10,7 +10,7 @@ const LoginPage = () => {
 
   const handleSuccess = async (res) => {
     const data = decode(res.credential);
-    console.log(data);
+
     setAccountUser(data);
 
     await addUser(data);
@@ -90,7 +90,7 @@ const Heading = styled.div`
 `;
 
 const ContentBox = styled.div`
-  height: 55vh;
+  height: auto;
   width: 55vw;
   margin-left: auto;
   margin-right: auto;
@@ -100,10 +100,6 @@ const ContentBox = styled.div`
   -moz-box-shadow: 0px 0px 10px 0px rgba(147, 139, 139, 0.75);
   display: flex;
   color: rgb(80, 96, 106);
-
-  @media (min-width: 1600px) {
-    height: 45vh;
-  }
 `;
 
 const Left = styled.div`

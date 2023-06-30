@@ -1,51 +1,27 @@
 import styled from "styled-components";
-import { Avatar, IconButton } from "@mui/material";
-import DonutLargeIcon from "@mui/icons-material/DonutLarge";
-import ChatIcon from "@mui/icons-material/Chat";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import SearchIcon from "@mui/icons-material/Search";
-import ChatPerson from "../ContentPage/LeftSide/ChatPerson";
 import EmptyChat from "../ContentPage/RightSide/EmptyChat";
+import ChatBox from "../ContentPage/RightSide/ChatBox";
+import LeftHeader from "../ContentPage/LeftSide/LeftHeader";
+import LeftSearchBar from "../ContentPage/LeftSide/LeftSearchBar";
+import LeftChatBar from "../ContentPage/LeftSide/LeftChatBar";
+import { useContext } from "react";
+import { AccountContext } from "../../context/AccountProvider";
 
 const HomePage = () => {
+  const { person } = useContext(AccountContext);
+
   return (
     <Container>
       <Header />
       <Content>
         <Left>
-          <LeftHeader>
-            <div className="leftSide__header">
-              <Avatar />
-            </div>
-            <div className="rightSide__header">
-              <IconButton>
-                <DonutLargeIcon />
-              </IconButton>
-              <IconButton>
-                <ChatIcon />
-              </IconButton>
-              <IconButton>
-                <MoreVertIcon />
-              </IconButton>
-            </div>
-          </LeftHeader>
-          <LeftSearchBar>
-            <div className="leftSearchBarConatiner">
-              <SearchIcon />
-              <input type="text" placeholder="Search or start new chat..." />
-            </div>
-          </LeftSearchBar>
-          <LeftChatBox>
-            <ChatPerson />
-            <ChatPerson />
-            <ChatPerson />
-            <ChatPerson />
-            <ChatPerson />
-          </LeftChatBox>
+          <LeftHeader />
+
+          <LeftSearchBar />
+
+          <LeftChatBar />
         </Left>
-        <Right>
-          <EmptyChat />
-        </Right>
+        <Right>{person ? <ChatBox /> : <EmptyChat />}</Right>
       </Content>
     </Container>
   );
@@ -74,6 +50,9 @@ const Content = styled.div`
   right: 0;
   margin: auto;
   display: flex;
+  box-shadow: 0px 0px 10px 0px rgba(147, 139, 139, 0.75);
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(147, 139, 139, 0.75);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(147, 139, 139, 0.75);
 
   @media (min-width: 1600px) {
     width: 85vw;
@@ -84,64 +63,7 @@ const Left = styled.div`
   display: flex;
   flex-direction: column;
   flex: 0.3;
-  border-right: 1px solid rgb(233, 237, 239);
-`;
-
-const LeftHeader = styled.div`
-  height: 35px;
-  background-color: rgb(240, 242, 245);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px;
-  border-bottom: 1px solid rgb(233, 237, 239);
-
-  & > .rightSide__header {
-    & > svg {
-      color: rgb(84, 101, 111);
-    }
-
-    & > button {
-      padding: 14px;
-    }
-  }
-`;
-
-const LeftSearchBar = styled.div`
-  height: 50px;
-  border-bottom: 1px solid lightgray;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  & > .leftSearchBarConatiner {
-    background-color: rgb(240, 242, 245);
-    width: 92%;
-    border-radius: 7px;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    height: 50%;
-
-    & > svg {
-      margin-left: 10px;
-      font-size: 20px;
-    }
-
-    & > input {
-      outline: none;
-      border: none;
-      background-color: inherit;
-      margin: 0 15px;
-      width: 100%;
-      font-size: 14px;
-      font-weight: 100;
-    }
-  }
-`;
-
-const LeftChatBox = styled.div`
-  overflow: auto;
+  border-right: 1px solid lightgray;
 `;
 
 const Right = styled.div`

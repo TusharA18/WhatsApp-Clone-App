@@ -11,7 +11,7 @@ const App = () => {
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
-      {accountUser || true ? <HomePage /> : <LoginPage />}
+      {accountUser ? <HomePage /> : <LoginPage />}
     </GoogleOAuthProvider>
   );
 };

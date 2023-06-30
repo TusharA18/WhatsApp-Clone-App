@@ -1,7 +1,11 @@
 import { Avatar } from "@mui/material";
+import { useContext } from "react";
 import styled from "styled-components";
+import { AccountContext } from "../../../context/AccountProvider";
 
-const ChatPerson = () => {
+const ChatPerson = ({ user }) => {
+  const { setPerson } = useContext(AccountContext);
+
   const handleTrim = (string) => {
     if (string.length < 40) {
       return string;
@@ -10,19 +14,25 @@ const ChatPerson = () => {
     return string.substring(0, 40) + "...";
   };
 
+  const handleClick = () => {
+    setPerson(user);
+  };
+
   return (
-    <Conatiner>
-      <div className="chatPerson__avatar">
-        <Avatar />
-      </div>
-      <div className="chatPerson__details">
-        <div>
-          <h3>{handleTrim("Tushar Awasthi")}</h3>
-          <p>{new Date().toString().substring(0, 15)}</p>
+    <>
+      <Conatiner onClick={() => handleClick()}>
+        <div className="chatPerson__avatar">
+          <Avatar src={user?.picture} />
         </div>
-        <p>{handleTrim("hi there my name is ai")}</p>
-      </div>
-    </Conatiner>
+        <div className="chatPerson__details">
+          <div>
+            <h3>{handleTrim(user?.name)}</h3>
+            <p>{new Date().toString().substring(0, 15)}</p>
+          </div>
+          <p>{handleTrim("hi there my name is ai")}</p>
+        </div>
+      </Conatiner>
+    </>
   );
 };
 
@@ -40,6 +50,7 @@ const Conatiner = styled.div`
 
   & > .chatPerson__avatar {
     margin-right: 10px;
+    margin-left: 7px;
   }
 
   & > .chatPerson__details {
