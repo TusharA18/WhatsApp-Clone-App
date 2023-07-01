@@ -1,5 +1,6 @@
 import { Drawer } from "@mui/material";
 import ProfileInfo from "./ProfileInfo";
+import PropTypes from "prop-types";
 
 const DrawerStyle = {
   top: 21,
@@ -31,6 +32,11 @@ const ProfileInfoDrawer = ({ openDrawer, setOpenDrawer }) => {
       <ProfileInfo handleClose={handleClose} />
     </Drawer>
   );
+};
+
+ProfileInfoDrawer.propTypes = {
+  openDrawer: PropTypes.bool,
+  setOpenDrawer: PropTypes.func,
 };
 
 export default ProfileInfoDrawer;

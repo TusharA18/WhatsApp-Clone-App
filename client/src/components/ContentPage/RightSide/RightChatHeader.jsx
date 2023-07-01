@@ -4,6 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useContext } from "react";
 import { AccountContext } from "../../../context/AccountProvider";
 import RightHeaderDialog from "./RigthHeaderDialog";
+import PropTypes from "prop-types";
 
 const RightChatHeader = ({ conversation }) => {
   const { person } = useContext(AccountContext);
@@ -74,5 +75,9 @@ const Buttons = styled.div`
     }
   }
 `;
+
+RightChatHeader.propTypes = {
+  conversation: PropTypes.object,
+};
 
 export default RightChatHeader;

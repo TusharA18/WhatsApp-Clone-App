@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Message from "./Message";
 import { useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 
 const RightChatMessages = ({ messages }) => {
   const scrollRef = useRef(null);
@@ -32,5 +33,9 @@ const Container = styled.div`
     height: 83vh;
   }
 `;
+
+RightChatMessages.propTypes = {
+  messages: PropTypes.array,
+};
 
 export default RightChatMessages;

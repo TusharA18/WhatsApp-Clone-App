@@ -3,6 +3,7 @@ import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import MicIcon from "@mui/icons-material/Mic";
 import { IconButton } from "@mui/material";
+import PropTypes from "prop-types";
 
 const RightChatBar = ({ inputMessage, setInputMessage, setKeyCode }) => {
   return (
@@ -73,5 +74,11 @@ const MessageBar = styled.div`
     font-size: 14px;
   }
 `;
+
+RightChatBar.propTypes = {
+  inputMessage: PropTypes.string,
+  setInputMessage: PropTypes.func,
+  setKeyCode: PropTypes.func,
+};
 
 export default RightChatBar;

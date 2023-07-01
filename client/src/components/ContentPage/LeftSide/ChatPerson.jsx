@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { AccountContext } from "../../../context/AccountProvider";
 import { addConversation, getConversation } from "../../../services/api";
 import { formatDate } from "../../../../utils/common-utils";
+import PropTypes from "prop-types";
 
 const ChatPerson = ({ user }) => {
   const [message, setMessage] = useState({});
@@ -109,5 +110,9 @@ const Conatiner = styled.div`
     }
   }
 `;
+
+ChatPerson.propTypes = {
+  user: PropTypes.object,
+};
 
 export default ChatPerson;

@@ -2,6 +2,7 @@ import { useContext } from "react";
 import styled from "styled-components";
 import { AccountContext } from "../../../context/AccountProvider";
 import { formatDate } from "../../../../utils/common-utils";
+import PropTypes from "prop-types";
 
 const Message = ({ message }) => {
   const { accountUser } = useContext(AccountContext);
@@ -69,5 +70,13 @@ const Time = styled.p`
   white-space: nowrap;
   color: #919191;
 `;
+
+Message.propTypes = {
+  message: PropTypes.object,
+};
+
+TextMessage.propTypes = {
+  message: PropTypes.object,
+};
 
 export default Message;

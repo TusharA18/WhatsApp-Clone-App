@@ -3,12 +3,13 @@ import { IconButton, Menu, MenuItem, styled } from "@mui/material";
 import { useContext, useState } from "react";
 import { AccountContext } from "../../../context/AccountProvider";
 import { deleteAllMessages } from "../../../services/api";
+import PropTypes from "prop-types";
 
 const RightHeaderDialog = ({ conversation }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const { accountUser, person, deleteMessagesFlag, setDeleteMessagesFlag } =
+  const { deleteMessagesFlag, setDeleteMessagesFlag } =
     useContext(AccountContext);
 
   const handleClick = (e) => {
@@ -61,5 +62,9 @@ const MenuOption = styled(MenuItem)`
   padding: 15px 50px 7px 20px;
   color: #4a4a4a;
 `;
+
+RightHeaderDialog.propTypes = {
+  conversation: PropTypes.object,
+};
 
 export default RightHeaderDialog;

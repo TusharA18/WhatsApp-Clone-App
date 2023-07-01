@@ -44,7 +44,7 @@ const LoginPage = () => {
           </Left>
           <Right style={{ postion: "relative" }}>
             <img src="/images/qr-code.jpg" alt="qr-code" />
-            <div style={{ position: "absolute", top: "50%", bottom: "0" }}>
+            <div style={{ position: "absolute" }}>
               <GoogleLogin onSuccess={handleSuccess} onError={handleError} />
             </div>
           </Right>
@@ -132,7 +132,21 @@ const Right = styled.div`
 
   & > img {
     height: 20rem;
-    margin: 30px 20px 20px 10px;
+    margin: 50px 20px 20px 10px;
+  }
+
+  & > div {
+    top: 55%;
+  }
+
+  @media (min-width: 1600px) {
+    & > div {
+      top: 57%;
+    }
+
+    & > img {
+      margin: 20px 20px 20px 10px;
+    }
   }
 `;
 

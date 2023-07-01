@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import SearchIcon from "@mui/icons-material/Search";
+import PropTypes from "prop-types";
 
 const LeftSearchBar = ({ text, setText }) => {
   return (
@@ -50,5 +51,10 @@ const Container = styled.div`
     }
   }
 `;
+
+LeftSearchBar.propTypes = {
+  text: PropTypes.string,
+  setText: PropTypes.func,
+};
 
 export default LeftSearchBar;

@@ -2,6 +2,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IconButton, Menu, MenuItem, styled } from "@mui/material";
 import { useContext, useState } from "react";
 import { AccountContext } from "../../../context/AccountProvider";
+import PropTypes from "prop-types";
 
 const LeftHeaderDialog = ({ setOpenDrawer }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -66,5 +67,9 @@ const MenuOption = styled(MenuItem)`
   padding: 15px 50px 7px 20px;
   color: #4a4a4a;
 `;
+
+LeftHeaderDialog.propTypes = {
+  setOpenDrawer: PropTypes.func,
+};
 
 export default LeftHeaderDialog;

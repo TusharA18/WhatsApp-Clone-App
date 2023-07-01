@@ -4,6 +4,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EditIcon from "@mui/icons-material/Edit";
 import { useContext } from "react";
 import { AccountContext } from "../../../context/AccountProvider";
+import PropTypes from "prop-types";
 
 const ProfileInfo = ({ handleClose }) => {
   const { accountUser } = useContext(AccountContext);
@@ -145,5 +146,9 @@ const About = styled.div`
     }
   }
 `;
+
+ProfileInfo.propTypes = {
+  handleClose: PropTypes.func,
+};
 
 export default ProfileInfo;
