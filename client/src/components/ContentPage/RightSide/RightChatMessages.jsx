@@ -2,24 +2,21 @@ import styled from "styled-components";
 import Message from "./Message";
 import { useEffect, useRef } from "react";
 
-const RightChatMessages = () => {
+const RightChatMessages = ({ messages }) => {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ block: "end", behavior: "smooth" });
-  }, []);
+    scrollRef.current?.scrollIntoView({ block: "center", behaviour: "auto" });
+  }, [messages]);
 
   return (
-    <Container ref={scrollRef}>
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
-      <Message />
+    <Container>
+      {messages &&
+        messages.map((message) => (
+          <div key={message._id} ref={scrollRef}>
+            <Message message={message} />
+          </div>
+        ))}
     </Container>
   );
 };

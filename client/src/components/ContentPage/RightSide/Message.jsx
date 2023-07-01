@@ -1,17 +1,22 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import { AccountContext } from "../../../context/AccountProvider";
+import { formatDate } from "../../../../utils/common-utils";
 
-const Message = () => {
+const Message = ({ message }) => {
+  const { accountUser } = useContext(AccountContext);
+
   return (
     <>
-      <Send>
-        <TextMessage />
-      </Send>
-      <Send>
-        <TextMessage />
-      </Send>
-      <Receive>
-        <TextMessage />
-      </Receive>
+      {message.senderId === accountUser.sub ? (
+        <Send>
+          <TextMessage message={message} />
+        </Send>
+      ) : (
+        <Receive>
+          <TextMessage message={message} />
+        </Receive>
+      )}
     </>
   );
 };
@@ -43,24 +48,25 @@ const Receive = styled.div`
   border-radius: 12px;
 `;
 
-const TextMessage = () => {
+const TextMessage = ({ message }) => {
   return (
     <>
-      <Text>Hi there, my name is Tushar</Text>
-      <Time>{new Date().toString().substring(0, 15)}</Time>
+      <Text>{message?.text}</Text>
+      <Time>{formatDate(message?.createdAt)}</Time>
     </>
   );
 };
 
 const Text = styled.p`
   font-size: 14px;
-  padding: 0 25px 0 5px;
+  padding: 0 10px 0 5px;
 `;
 
 const Time = styled.p`
   font-size: 10px;
   margin-top: auto;
   word-break: keep-all;
+  white-space: nowrap;
   color: #919191;
 `;
 

@@ -4,7 +4,7 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import MicIcon from "@mui/icons-material/Mic";
 import { IconButton } from "@mui/material";
 
-const RightChatBar = () => {
+const RightChatBar = ({ inputMessage, setInputMessage, setKeyCode }) => {
   return (
     <Container>
       <IconButton>
@@ -14,7 +14,13 @@ const RightChatBar = () => {
         <AttachFileIcon />
       </IconButton>
       <MessageBar>
-        <input type="text" placeholder="Type a message..." />
+        <input
+          type="text"
+          placeholder="Type a message..."
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
+          onKeyDown={(e) => setKeyCode(e)}
+        />
       </MessageBar>
       <IconButton className="rightChatBar__MicIcon">
         <MicIcon />

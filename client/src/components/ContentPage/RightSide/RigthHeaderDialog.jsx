@@ -2,12 +2,14 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IconButton, Menu, MenuItem, styled } from "@mui/material";
 import { useContext, useState } from "react";
 import { AccountContext } from "../../../context/AccountProvider";
+import { deleteAllMessages } from "../../../services/api";
 
-const LeftHeaderDialog = ({ setOpenDrawer }) => {
+const RightHeaderDialog = ({ conversation }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const { setAccountUser, setPerson } = useContext(AccountContext);
+  const { accountUser, person, deleteMessagesFlag, setDeleteMessagesFlag } =
+    useContext(AccountContext);
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
@@ -17,9 +19,10 @@ const LeftHeaderDialog = ({ setOpenDrawer }) => {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    setAccountUser();
-    setPerson();
+  const handleDelete = async () => {
+    await deleteAllMessages({ conversationId: conversation._id });
+
+    setDeleteMessagesFlag(!deleteMessagesFlag);
   };
 
   return (
@@ -43,18 +46,10 @@ const LeftHeaderDialog = ({ setOpenDrawer }) => {
         <MenuOption
           onClick={() => {
             handleClose();
-            setOpenDrawer(true);
+            handleDelete();
           }}
         >
-          Profile
-        </MenuOption>
-        <MenuOption
-          onClick={() => {
-            handleClose();
-            handleLogout();
-          }}
-        >
-          Logout
+          Delete All Messages
         </MenuOption>
       </Menu>
     </>
@@ -67,4 +62,4 @@ const MenuOption = styled(MenuItem)`
   color: #4a4a4a;
 `;
 
-export default LeftHeaderDialog;
+export default RightHeaderDialog;

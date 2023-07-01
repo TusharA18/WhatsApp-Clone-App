@@ -1,11 +1,11 @@
 import { Avatar, IconButton } from "@mui/material";
 import styled from "styled-components";
 import SearchIcon from "@mui/icons-material/Search";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useContext } from "react";
 import { AccountContext } from "../../../context/AccountProvider";
+import RightHeaderDialog from "./RigthHeaderDialog";
 
-const RightChatHeader = () => {
+const RightChatHeader = ({ conversation }) => {
   const { person } = useContext(AccountContext);
 
   return (
@@ -23,9 +23,7 @@ const RightChatHeader = () => {
         <IconButton>
           <SearchIcon />
         </IconButton>
-        <IconButton>
-          <MoreVertIcon />
-        </IconButton>
+        <RightHeaderDialog conversation={conversation} />
       </Buttons>
     </Container>
   );
@@ -58,7 +56,7 @@ const Details = styled.div`
 
     & > p {
       margin-top: 4px;
-      font-size: 13px;
+      font-size: 12px;
     }
   }
 `;

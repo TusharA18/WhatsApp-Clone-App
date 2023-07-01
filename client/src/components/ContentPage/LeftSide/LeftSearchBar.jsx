@@ -1,12 +1,17 @@
 import styled from "styled-components";
 import SearchIcon from "@mui/icons-material/Search";
 
-const LeftSearchBar = () => {
+const LeftSearchBar = ({ text, setText }) => {
   return (
     <Container>
       <div className="leftSearchBarConatiner">
         <SearchIcon />
-        <input type="text" placeholder="Search or start new chat..." />
+        <input
+          type="text"
+          placeholder="Search or start new chat..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
       </div>
     </Container>
   );

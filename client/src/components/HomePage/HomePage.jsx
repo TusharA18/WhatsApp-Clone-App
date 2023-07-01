@@ -4,11 +4,29 @@ import ChatBox from "../ContentPage/RightSide/ChatBox";
 import LeftHeader from "../ContentPage/LeftSide/LeftHeader";
 import LeftSearchBar from "../ContentPage/LeftSide/LeftSearchBar";
 import LeftChatBar from "../ContentPage/LeftSide/LeftChatBar";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AccountContext } from "../../context/AccountProvider";
+import { getUsers } from "../../services/api";
 
 const HomePage = () => {
+  const [users, setUsers] = useState([]);
+  const [text, setText] = useState("");
+
   const { person } = useContext(AccountContext);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await getUsers();
+
+      const filterResponse = response.filter((user) =>
+        user.name.toLowerCase().includes(text.toLowerCase())
+      );
+
+      setUsers(filterResponse);
+    };
+
+    fetchUser();
+  }, [text]);
 
   return (
     <Container>
@@ -17,9 +35,9 @@ const HomePage = () => {
         <Left>
           <LeftHeader />
 
-          <LeftSearchBar />
+          <LeftSearchBar text={text} setText={setText} />
 
-          <LeftChatBar />
+          <LeftChatBar users={users} />
         </Left>
         <Right>{person ? <ChatBox /> : <EmptyChat />}</Right>
       </Content>

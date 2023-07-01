@@ -1,38 +1,59 @@
 import { Avatar } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { AccountContext } from "../../../context/AccountProvider";
+import { addConversation, getConversation } from "../../../services/api";
+import { formatDate } from "../../../../utils/common-utils";
 
 const ChatPerson = ({ user }) => {
-  const { setPerson } = useContext(AccountContext);
+  const [message, setMessage] = useState({});
+
+  const { accountUser, setPerson, newMessageFlag, deleteMessagesFlag } =
+    useContext(AccountContext);
+
+  useEffect(() => {
+    const getConversationDetails = async () => {
+      const data = await getConversation({
+        senderId: accountUser.sub,
+        receiverId: user.sub,
+      });
+
+      setMessage({ text: data.message, timestamp: data.updatedAt });
+    };
+
+    getConversationDetails();
+  }, [newMessageFlag, deleteMessagesFlag]); // eslint-disable-line
 
   const handleTrim = (string) => {
-    if (string.length < 40) {
+    if (string?.length < 40) {
       return string;
     }
 
-    return string.substring(0, 40) + "...";
+    return string?.substring(0, 40) + "...";
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
     setPerson(user);
+
+    await addConversation({
+      senderId: accountUser.sub,
+      receiverId: user.sub,
+    });
   };
 
   return (
-    <>
-      <Conatiner onClick={() => handleClick()}>
-        <div className="chatPerson__avatar">
-          <Avatar src={user?.picture} />
+    <Conatiner onClick={() => handleClick()}>
+      <div className="chatPerson__avatar">
+        <Avatar src={user?.picture} />
+      </div>
+      <div className="chatPerson__details">
+        <div>
+          <h3>{handleTrim(user?.name)}</h3>
+          <p>{message?.text && formatDate(message?.timestamp)}</p>
         </div>
-        <div className="chatPerson__details">
-          <div>
-            <h3>{handleTrim(user?.name)}</h3>
-            <p>{new Date().toString().substring(0, 15)}</p>
-          </div>
-          <p>{handleTrim("hi there my name is ai")}</p>
-        </div>
-      </Conatiner>
-    </>
+        <p>{message?.text && handleTrim(message?.text)}</p>
+      </div>
+    </Conatiner>
   );
 };
 
