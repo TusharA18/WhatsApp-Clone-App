@@ -1,6 +1,6 @@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IconButton, Menu, MenuItem, styled } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AccountContext } from "../../../context/AccountProvider";
 import { deleteAllMessages } from "../../../services/api";
 import PropTypes from "prop-types";
@@ -9,8 +9,14 @@ const RightHeaderDialog = ({ conversation }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const { deleteMessagesFlag, setDeleteMessagesFlag } =
+  const { person, deleteMessagesFlag, setDeleteMessagesFlag, socket } =
     useContext(AccountContext);
+
+  useEffect(() => {
+    socket.current.on("receivedDeleteMessageTrigger", () => {
+      setDeleteMessagesFlag(!deleteMessagesFlag);
+    });
+  }, []); // eslint-disable-line
 
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
@@ -21,6 +27,8 @@ const RightHeaderDialog = ({ conversation }) => {
   };
 
   const handleDelete = async () => {
+    socket.current.emit("deleteMessageTrigger", person.sub);
+
     await deleteAllMessages({ conversationId: conversation._id });
 
     setDeleteMessagesFlag(!deleteMessagesFlag);

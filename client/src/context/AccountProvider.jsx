@@ -1,5 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
+import { io } from "socket.io-client";
 
 export const AccountContext = createContext(null);
 
@@ -8,6 +9,13 @@ const AccountProvider = ({ children }) => {
   const [person, setPerson] = useState(null);
   const [newMessageFlag, setNewMessageFlag] = useState(true);
   const [deleteMessagesFlag, setDeleteMessagesFlag] = useState(true);
+  const [activeUsers, setActiveUsers] = useState([]);
+
+  const socket = useRef();
+
+  useEffect(() => {
+    socket.current = io(import.meta.env.VITE_REACT_SERVER_URL);
+  }, []);
 
   return (
     <AccountContext.Provider
@@ -20,6 +28,9 @@ const AccountProvider = ({ children }) => {
         setNewMessageFlag,
         deleteMessagesFlag,
         setDeleteMessagesFlag,
+        socket,
+        activeUsers,
+        setActiveUsers,
       }}
     >
       {children}

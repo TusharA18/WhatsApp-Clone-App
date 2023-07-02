@@ -12,14 +12,15 @@ const HomePage = () => {
   const [users, setUsers] = useState([]);
   const [text, setText] = useState("");
 
-  const { person } = useContext(AccountContext);
+  const { accountUser, person, socket, setActiveUsers } =
+    useContext(AccountContext);
 
   useEffect(() => {
     const fetchUser = async () => {
       const response = await getUsers();
 
       const filterResponse = response.filter((user) =>
-        user.name.toLowerCase().includes(text.toLowerCase())
+        user?.name?.toLowerCase()?.includes(text?.toLowerCase())
       );
 
       setUsers(filterResponse);
@@ -27,6 +28,22 @@ const HomePage = () => {
 
     fetchUser();
   }, [text]);
+
+  useEffect(() => {
+    socket.current.emit("addUser", accountUser);
+
+    socket.current.on("getUsers", (users) => {
+      setActiveUsers(users);
+
+      const fetchUser = async () => {
+        const response = await getUsers();
+
+        setUsers(response);
+      };
+
+      fetchUser();
+    });
+  }, [accountUser]); // eslint-disable-line
 
   return (
     <Container>

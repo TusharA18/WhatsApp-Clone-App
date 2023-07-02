@@ -14,6 +14,7 @@ const ChatBox = () => {
   const [conversation, setConversation] = useState({});
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [incomingMessage, setIncomingMessage] = useState(null);
 
   const {
     accountUser,
@@ -21,6 +22,7 @@ const ChatBox = () => {
     newMessageFlag,
     setNewMessageFlag,
     deleteMessagesFlag,
+    socket,
   } = useContext(AccountContext);
 
   // for getting conversation details
@@ -37,7 +39,7 @@ const ChatBox = () => {
     getConversationDetails();
 
     setInputMessage("");
-  }, [person.sub]); //eslint-disable-line
+  }, [person.sub]); // eslint-disable-line
 
   // for getting messages
   useEffect(() => {
@@ -49,6 +51,25 @@ const ChatBox = () => {
 
     getMessagesDetails();
   }, [conversation?._id, person?.sub, newMessageFlag, deleteMessagesFlag]);
+
+  // for getting real time message send to the other person
+  useEffect(() => {
+    socket.current.on("getMessage", (data) => {
+      setIncomingMessage({
+        ...data,
+        createdAt: Date.now(),
+      });
+    });
+  }, []); // eslint-disable-line
+
+  // for setting the incoming message to the chatbox
+  useEffect(() => {
+    incomingMessage &&
+      conversation?.members?.includes(incomingMessage.senderId) &&
+      setMessages((prev) => [...prev, incomingMessage]);
+
+    setNewMessageFlag((prev) => !prev);
+  }, [incomingMessage, conversation]); // eslint-disable-line
 
   const setKeyCode = async (e) => {
     const code = e.keyCode || e.which;
@@ -63,6 +84,8 @@ const ChatBox = () => {
         type: "text",
         text: inputMessage,
       };
+
+      socket.current.emit("sendMessage", message);
 
       await addMessage(message);
 

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Message from "./Message";
 import { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
+import { v4 } from "uuid";
 
 const RightChatMessages = ({ messages }) => {
   const scrollRef = useRef(null);
@@ -14,7 +15,7 @@ const RightChatMessages = ({ messages }) => {
     <Container>
       {messages &&
         messages.map((message) => (
-          <div key={message._id} ref={scrollRef}>
+          <div key={v4()} ref={scrollRef}>
             <Message message={message} />
           </div>
         ))}

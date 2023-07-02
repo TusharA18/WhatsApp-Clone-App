@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 const ChatPerson = ({ user }) => {
   const [message, setMessage] = useState({});
 
-  const { accountUser, setPerson, newMessageFlag, deleteMessagesFlag } =
+  const { accountUser, setPerson, socket, newMessageFlag, deleteMessagesFlag } =
     useContext(AccountContext);
 
   useEffect(() => {
@@ -19,11 +19,28 @@ const ChatPerson = ({ user }) => {
         receiverId: user.sub,
       });
 
-      setMessage({ text: data.message, timestamp: data.updatedAt });
+      setMessage({ text: data?.message, timestamp: data?.updatedAt });
     };
 
     getConversationDetails();
   }, [newMessageFlag, deleteMessagesFlag]); // eslint-disable-line
+
+  useEffect(() => {
+    socket.current.on("getMessage", (userData) => {
+      const getConversationDetails = async () => {
+        const data = await getConversation({
+          senderId: accountUser.sub,
+          receiverId: userData.senderId,
+        });
+
+        setMessage({ text: data?.message, timestamp: data?.updatedAt });
+      };
+
+      accountUser.sub === userData.receiverId &&
+        user.sub === userData.senderId &&
+        getConversationDetails();
+    });
+  }, []); // eslint-disable-line
 
   const handleTrim = (string) => {
     if (string?.length < 40) {
@@ -98,6 +115,7 @@ const Conatiner = styled.div`
         font-size: 12px;
         font-weight: 200;
         color: rgb(84, 101, 111);
+        white-space: nowrap;
       }
     }
 

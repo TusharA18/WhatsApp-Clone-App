@@ -7,7 +7,7 @@ import RightHeaderDialog from "./RigthHeaderDialog";
 import PropTypes from "prop-types";
 
 const RightChatHeader = ({ conversation }) => {
-  const { person } = useContext(AccountContext);
+  const { person, activeUsers } = useContext(AccountContext);
 
   return (
     <Container>
@@ -17,7 +17,11 @@ const RightChatHeader = ({ conversation }) => {
         </div>
         <div className="rightChatHeader__details">
           <h3>{person?.name}</h3>
-          <p>Online or Offline</p>
+          <p>
+            {activeUsers.find((user) => user.sub === person.sub)
+              ? "Online"
+              : "Offline"}
+          </p>
         </div>
       </Details>
       <Buttons>

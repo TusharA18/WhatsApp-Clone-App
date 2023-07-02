@@ -15,6 +15,7 @@ const LoginPage = () => {
 
     await addUser(data);
   };
+
   const handleError = (res) => {
     console.log(res);
   };
