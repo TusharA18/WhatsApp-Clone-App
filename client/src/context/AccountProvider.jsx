@@ -10,6 +10,7 @@ const AccountProvider = ({ children }) => {
   const [newMessageFlag, setNewMessageFlag] = useState(true);
   const [deleteMessagesFlag, setDeleteMessagesFlag] = useState(true);
   const [activeUsers, setActiveUsers] = useState([]);
+  const [messages, setMessages] = useState([]);
 
   const socket = useRef();
 
@@ -31,6 +32,8 @@ const AccountProvider = ({ children }) => {
         socket,
         activeUsers,
         setActiveUsers,
+        messages,
+        setMessages,
       }}
     >
       {children}

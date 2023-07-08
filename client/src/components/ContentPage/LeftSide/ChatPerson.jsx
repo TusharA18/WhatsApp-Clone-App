@@ -9,8 +9,14 @@ import PropTypes from "prop-types";
 const ChatPerson = ({ user }) => {
   const [message, setMessage] = useState({});
 
-  const { accountUser, setPerson, socket, newMessageFlag, deleteMessagesFlag } =
-    useContext(AccountContext);
+  const {
+    accountUser,
+    person,
+    setPerson,
+    socket,
+    newMessageFlag,
+    deleteMessagesFlag,
+  } = useContext(AccountContext);
 
   useEffect(() => {
     const getConversationDetails = async () => {
@@ -26,19 +32,39 @@ const ChatPerson = ({ user }) => {
   }, [newMessageFlag, deleteMessagesFlag]); // eslint-disable-line
 
   useEffect(() => {
+    const getConversationDetails = async () => {
+      const data = await getConversation({
+        senderId: accountUser.sub,
+        receiverId: user.sub,
+      });
+
+      setMessage({ text: data?.message, timestamp: data?.updatedAt });
+    };
+
+    person && getConversationDetails();
+  }, [newMessageFlag, deleteMessagesFlag]); // eslint-disable-line
+
+  useEffect(() => {
     socket.current.on("getMessage", (userData) => {
       const getConversationDetails = async () => {
-        const data = await getConversation({
-          senderId: accountUser.sub,
-          receiverId: userData.senderId,
-        });
-
-        setMessage({ text: data?.message, timestamp: data?.updatedAt });
+        setMessage({ text: userData?.text, timestamp: Date.now() });
       };
 
       accountUser.sub === userData.receiverId &&
         user.sub === userData.senderId &&
         getConversationDetails();
+    });
+  }, [newMessageFlag]); // eslint-disable-line
+
+  useEffect(() => {
+    socket.current.on("leftChatBarDeleteMessageTrigger", (userData) => {
+      const deleteConversationDetails = async () => {
+        setMessage({});
+      };
+
+      accountUser.sub === userData.receiverId &&
+        user.sub === userData.senderId &&
+        deleteConversationDetails();
     });
   }, []); // eslint-disable-line
 

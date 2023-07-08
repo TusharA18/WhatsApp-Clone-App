@@ -9,8 +9,13 @@ const RightHeaderDialog = ({ conversation }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const { person, deleteMessagesFlag, setDeleteMessagesFlag, socket } =
-    useContext(AccountContext);
+  const {
+    accountUser,
+    person,
+    deleteMessagesFlag,
+    setDeleteMessagesFlag,
+    socket,
+  } = useContext(AccountContext);
 
   useEffect(() => {
     socket.current.on("receivedDeleteMessageTrigger", () => {
@@ -27,7 +32,9 @@ const RightHeaderDialog = ({ conversation }) => {
   };
 
   const handleDelete = async () => {
-    socket.current.emit("deleteMessageTrigger", person.sub);
+    const data = { senderId: accountUser.sub, receiverId: person.sub };
+
+    socket.current.emit("deleteMessageTrigger", data);
 
     await deleteAllMessages({ conversationId: conversation._id });
 

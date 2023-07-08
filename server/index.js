@@ -61,13 +61,14 @@ io.on("connection", (socket) => {
   socket.on("sendMessage", (data) => {
     const user = getUser(data.receiverId);
 
-    io.to(user.socketId).emit("getMessage", data);
+    io.to(user?.socketId).emit("getMessage", data);
   });
 
-  socket.on("deleteMessageTrigger", (userId) => {
-    const user = getUser(userId);
+  socket.on("deleteMessageTrigger", (data) => {
+    const user = getUser(data.receiverId);
 
-    io.to(user.socketId).emit("receivedDeleteMessageTrigger");
+    io.to(user?.socketId).emit("receivedDeleteMessageTrigger");
+    io.to(user?.socketId).emit("leftChatBarDeleteMessageTrigger", data);
   });
 
   socket.on("disconnect", () => {

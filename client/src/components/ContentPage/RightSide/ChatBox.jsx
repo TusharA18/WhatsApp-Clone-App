@@ -13,7 +13,6 @@ import {
 const ChatBox = () => {
   const [conversation, setConversation] = useState({});
   const [inputMessage, setInputMessage] = useState("");
-  const [messages, setMessages] = useState([]);
   const [incomingMessage, setIncomingMessage] = useState(null);
 
   const {
@@ -23,6 +22,8 @@ const ChatBox = () => {
     setNewMessageFlag,
     deleteMessagesFlag,
     socket,
+    messages,
+    setMessages,
   } = useContext(AccountContext);
 
   // for getting conversation details
@@ -50,7 +51,7 @@ const ChatBox = () => {
     };
 
     getMessagesDetails();
-  }, [conversation?._id, person?.sub, newMessageFlag, deleteMessagesFlag]);
+  }, [conversation?._id, person?.sub, newMessageFlag, deleteMessagesFlag]); // eslint-disable-line
 
   // for getting real time message send to the other person
   useEffect(() => {

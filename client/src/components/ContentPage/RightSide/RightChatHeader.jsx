@@ -5,9 +5,10 @@ import { useContext } from "react";
 import { AccountContext } from "../../../context/AccountProvider";
 import RightHeaderDialog from "./RigthHeaderDialog";
 import PropTypes from "prop-types";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const RightChatHeader = ({ conversation }) => {
-  const { person, activeUsers } = useContext(AccountContext);
+  const { person, activeUsers, messages } = useContext(AccountContext);
 
   return (
     <Container>
@@ -28,7 +29,13 @@ const RightChatHeader = ({ conversation }) => {
         <IconButton>
           <SearchIcon />
         </IconButton>
-        <RightHeaderDialog conversation={conversation} />
+        {messages.length === 0 ? (
+          <IconButton>
+            <MoreVertIcon />
+          </IconButton>
+        ) : (
+          <RightHeaderDialog conversation={conversation} />
+        )}
       </Buttons>
     </Container>
   );
