@@ -4,17 +4,36 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import MicIcon from "@mui/icons-material/Mic";
 import { IconButton } from "@mui/material";
 import PropTypes from "prop-types";
+import { useContext } from "react";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
+import { AccountContext } from "../../../context/AccountProvider";
 
 const RightChatBar = ({ inputMessage, setInputMessage, setKeyCode }) => {
+  const { showPicker, setShowPicker } = useContext(AccountContext);
+
   return (
     <Container>
-      <IconButton>
+      <IconButton onClick={() => setShowPicker(!showPicker)}>
         <EmojiEmotionsOutlinedIcon />
       </IconButton>
-      <IconButton className="rightChatBar__attachFile">
+      {showPicker && (
+        <div className="pickerContainer">
+          <Picker
+            data={data}
+            previewPosition="none"
+            theme="light"
+            onEmojiSelect={(e) => setInputMessage((prev) => prev + e.native)}
+          />
+        </div>
+      )}
+      <IconButton
+        className="rightChatBar__attachFile"
+        onClick={() => setShowPicker(false)}
+      >
         <AttachFileIcon />
       </IconButton>
-      <MessageBar>
+      <MessageBar onClick={() => setShowPicker(false)}>
         <input
           type="text"
           placeholder="Type a message..."
@@ -23,7 +42,10 @@ const RightChatBar = ({ inputMessage, setInputMessage, setKeyCode }) => {
           onKeyDown={(e) => setKeyCode(e)}
         />
       </MessageBar>
-      <IconButton className="rightChatBar__MicIcon">
+      <IconButton
+        className="rightChatBar__MicIcon"
+        onClick={() => setShowPicker(false)}
+      >
         <MicIcon />
       </IconButton>
     </Container>
@@ -36,8 +58,17 @@ const Container = styled.div`
   display: flex;
   padding-left: 10px;
 
-  & > button > svg {
-    font-size: 25px;
+  & > button {
+    cursor: pointer;
+
+    & > svg {
+      font-size: 25px;
+    }
+  }
+
+  & > .pickerContainer {
+    position: absolute;
+    bottom: 9%;
   }
 
   & > .rightChatBar__attachFile {
@@ -50,10 +81,20 @@ const Container = styled.div`
 
   & > .rightChatBar__MicIcon {
     margin-right: 10px;
+
+    & > .pickerContainer {
+      position: absolute;
+      bottom: 7%;
+    }
   }
 
   @media (min-width: 1600px) {
     height: 51px;
+
+    & > .pickerContainer {
+      position: absolute;
+      bottom: 7%;
+    }
   }
 `;
 

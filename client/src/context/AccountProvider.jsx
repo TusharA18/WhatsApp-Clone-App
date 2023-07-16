@@ -11,6 +11,7 @@ const AccountProvider = ({ children }) => {
   const [deleteMessagesFlag, setDeleteMessagesFlag] = useState(true);
   const [activeUsers, setActiveUsers] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [showPicker, setShowPicker] = useState(false);
 
   const socket = useRef();
 
@@ -34,6 +35,8 @@ const AccountProvider = ({ children }) => {
         setActiveUsers,
         messages,
         setMessages,
+        showPicker,
+        setShowPicker,
       }}
     >
       {children}

@@ -12,7 +12,7 @@ const HomePage = () => {
   const [users, setUsers] = useState([]);
   const [text, setText] = useState("");
 
-  const { accountUser, person, socket, setActiveUsers } =
+  const { accountUser, person, socket, setActiveUsers, setShowPicker } =
     useContext(AccountContext);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const HomePage = () => {
     <Container>
       <Header />
       <Content>
-        <Left>
+        <Left onClick={() => setShowPicker(false)}>
           <LeftHeader />
 
           <LeftSearchBar text={text} setText={setText} />

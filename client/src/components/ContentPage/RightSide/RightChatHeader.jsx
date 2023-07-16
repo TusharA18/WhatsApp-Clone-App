@@ -8,13 +8,14 @@ import PropTypes from "prop-types";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const RightChatHeader = ({ conversation }) => {
-  const { person, activeUsers, messages } = useContext(AccountContext);
+  const { person, activeUsers, messages, setShowPicker } =
+    useContext(AccountContext);
 
   return (
-    <Container>
+    <Container onClick={() => setShowPicker(false)}>
       <Details>
         <div className="rightChatHeader__avatar">
-          <Avatar src={person?.picture} />
+          <Avatar src={person?.picture} onClick={() => setShowPicker(false)} />
         </div>
         <div className="rightChatHeader__details">
           <h3>{person?.name}</h3>
