@@ -1,8 +1,10 @@
 import { useContext } from "react";
 import styled from "styled-components";
 import { AccountContext } from "../../../context/AccountProvider";
-import { formatDate } from "../../../../utils/common-utils";
+import { downloadMedia, formatDate } from "../../../../utils/common-utils";
 import PropTypes from "prop-types";
+import DownloadIcon from "@mui/icons-material/Download";
+import { IconButton } from "@mui/material";
 
 const Message = ({ message }) => {
   const { accountUser } = useContext(AccountContext);
@@ -11,11 +13,19 @@ const Message = ({ message }) => {
     <>
       {message.senderId === accountUser.sub ? (
         <Send>
-          <TextMessage message={message} />
+          {message.type === "file" ? (
+            <FileMessage message={message} />
+          ) : (
+            <TextMessage message={message} />
+          )}
         </Send>
       ) : (
         <Receive>
-          <TextMessage message={message} />
+          {message.type === "file" ? (
+            <FileMessage message={message} />
+          ) : (
+            <TextMessage message={message} />
+          )}
         </Receive>
       )}
     </>
@@ -71,11 +81,88 @@ const Time = styled.p`
   color: #919191;
 `;
 
+const FileMessage = ({ message }) => {
+  return (
+    <FileContainer>
+      {message?.text?.includes(".pdf") || message?.text?.includes(".txt") ? (
+        <FileFormat>
+          <FileFormatImage
+            src={
+              message?.text?.includes(".pdf")
+                ? "/images/pdf-icon.png"
+                : "/images/txt-file.png"
+            }
+            alt={message?.text?.includes(".pdf") ? "PDF File" : "Text File"}
+          />
+          <FileFormatText>{message?.text?.split("-").pop()}</FileFormatText>
+        </FileFormat>
+      ) : (
+        <Image src={message?.text} alt={message?.text} />
+      )}
+
+      <FileContent>
+        <IconButton onClick={(e) => downloadMedia(e, message.text)}>
+          <DownloadIcon />
+        </IconButton>
+        <FileTime>{formatDate(message?.createdAt)}</FileTime>
+      </FileContent>
+    </FileContainer>
+  );
+};
+
+const FileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Image = styled.img`
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  padding: 10px 5px;
+  padding-bottom: 0px;
+  border-radius: 15px;
+`;
+
+const FileContent = styled.div`
+  display: flex;
+  align-items: center;
+
+  & > button > svg {
+    font-size: 20px;
+  }
+`;
+
+const FileTime = styled.p`
+  font-size: 10px;
+  color: #919191;
+  margin-left: auto;
+  margin-right: 5px;
+`;
+
+const FileFormat = styled.div`
+  display: flex;
+`;
+
+const FileFormatImage = styled.img`
+  width: 100px;
+  height: 100px;
+  padding: 10px;
+`;
+
+const FileFormatText = styled.p`
+  margin-right: 10px;
+`;
+
 Message.propTypes = {
   message: PropTypes.object,
 };
 
 TextMessage.propTypes = {
+  message: PropTypes.object,
+};
+
+FileMessage.propTypes = {
   message: PropTypes.object,
 };
 

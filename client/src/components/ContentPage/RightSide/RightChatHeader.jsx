@@ -15,7 +15,7 @@ const RightChatHeader = ({ conversation }) => {
     <Container onClick={() => setShowPicker(false)}>
       <Details>
         <div className="rightChatHeader__avatar">
-          <Avatar src={person?.picture} onClick={() => setShowPicker(false)} />
+          <Avatar src={person?.picture} />
         </div>
         <div className="rightChatHeader__details">
           <h3>{person?.name}</h3>

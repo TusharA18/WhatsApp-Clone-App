@@ -4,13 +4,43 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import MicIcon from "@mui/icons-material/Mic";
 import { IconButton } from "@mui/material";
 import PropTypes from "prop-types";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { AccountContext } from "../../../context/AccountProvider";
+import { uploadFile } from "../../../services/api";
 
-const RightChatBar = ({ inputMessage, setInputMessage, setKeyCode }) => {
+const RightChatBar = ({
+  inputMessage,
+  setInputMessage,
+  setKeyCode,
+  file,
+  setFile,
+  setImage,
+}) => {
   const { showPicker, setShowPicker } = useContext(AccountContext);
+
+  useEffect(() => {
+    const getFile = async () => {
+      if (file) {
+        const data = new FormData();
+
+        data.append("name", file.name);
+        data.append("file", file);
+
+        const response = await uploadFile(data);
+
+        setImage(response.data);
+      }
+    };
+
+    getFile();
+  }, [file]); // eslint-disable-line
+
+  const handleChange = (e) => {
+    setFile(e.target.files[0]);
+    e.target.files[0] && setInputMessage(e.target.files[0].name);
+  };
 
   return (
     <Container>
@@ -27,11 +57,17 @@ const RightChatBar = ({ inputMessage, setInputMessage, setKeyCode }) => {
           />
         </div>
       )}
-      <IconButton
-        className="rightChatBar__attachFile"
-        onClick={() => setShowPicker(false)}
-      >
-        <AttachFileIcon />
+      <IconButton onClick={() => setShowPicker(false)}>
+        <label htmlFor="file">
+          <AttachFileIcon className="rightChatBar__attachFile" />
+        </label>
+        <input
+          type="file"
+          name="file"
+          id="file"
+          style={{ display: "none" }}
+          onChange={(e) => handleChange(e)}
+        />
       </IconButton>
       <MessageBar onClick={() => setShowPicker(false)}>
         <input
@@ -60,6 +96,7 @@ const Container = styled.div`
 
   & > button {
     cursor: pointer;
+    margin-right: 5px;
 
     & > svg {
       font-size: 25px;
@@ -71,8 +108,9 @@ const Container = styled.div`
     bottom: 9%;
   }
 
-  & > .rightChatBar__attachFile {
+  & > button > label > .rightChatBar__attachFile {
     transform: rotate(30deg);
+    cursor: pointer;
   }
 
   & > input {
@@ -120,6 +158,9 @@ RightChatBar.propTypes = {
   inputMessage: PropTypes.string,
   setInputMessage: PropTypes.func,
   setKeyCode: PropTypes.func,
+  file: PropTypes.object,
+  setFile: PropTypes.func,
+  setImage: PropTypes.func,
 };
 
 export default RightChatBar;

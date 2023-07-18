@@ -8,3 +8,32 @@ export const formatDate = (date) => {
     minutes < 10 ? "0" + minutes : minutes
   } ${timeframe}`;
 };
+
+export const downloadMedia = (e, originalURL) => {
+  e.preventDefault();
+
+  try {
+    fetch(originalURL)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+
+        a.style.display = "none";
+        a.href = url;
+
+        const fileName = originalURL.split("-").pop();
+
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((error) => {
+        console.log("Error while downloading the image ", error.message);
+      });
+  } catch (error) {
+    console.log("Error while downloading the image ", error.message);
+  }
+};

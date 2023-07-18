@@ -1,5 +1,17 @@
 import Conversation from "../models/Conversation.js";
 import Message from "../models/Message.js";
+import mongoose from "mongoose";
+import Grid from "gridfs-stream";
+
+const connection = mongoose.connection;
+
+let gfs;
+
+connection.once("open", () => {
+  gfs = Grid(connection.db, mongoose.mongo);
+
+  gfs.collection("uploads");
+});
 
 export const addMessage = async (req, res) => {
   try {
@@ -37,6 +49,24 @@ export const deleteAllMessages = async (req, res) => {
 
     await Conversation.findByIdAndUpdate(conversationId, {
       message: "",
+    });
+
+    const messages = await Message.find({ conversationId, type: "file" });
+
+    messages.map(async (message) => {
+      const fileName = message?.text?.split("/")?.pop();
+
+      const file = await gfs.files.findOne({ filename: fileName });
+
+      const gfsb = new mongoose.mongo.GridFSBucket(connection.db, {
+        bucketName: "uploads",
+      });
+
+      gfsb.delete(file._id, function (err, gridStore) {
+        if (err) {
+          console.log(err);
+        }
+      });
     });
 
     await Message.deleteMany({ conversationId });

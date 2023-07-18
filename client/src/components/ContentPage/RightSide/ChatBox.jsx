@@ -14,6 +14,8 @@ const ChatBox = () => {
   const [conversation, setConversation] = useState({});
   const [inputMessage, setInputMessage] = useState("");
   const [incomingMessage, setIncomingMessage] = useState(null);
+  const [file, setFile] = useState();
+  const [image, setImage] = useState("");
 
   const {
     accountUser,
@@ -78,19 +80,33 @@ const ChatBox = () => {
     const containSpaces = inputMessage.replace(/\s/g, "").length !== 0;
 
     if (code === 13 && containSpaces) {
-      let message = {
-        conversationId: conversation?._id,
-        senderId: accountUser.sub,
-        receiverId: person.sub,
-        type: "text",
-        text: inputMessage,
-      };
+      let message;
+
+      if (!file) {
+        message = {
+          conversationId: conversation?._id,
+          senderId: accountUser.sub,
+          receiverId: person.sub,
+          type: "text",
+          text: inputMessage,
+        };
+      } else {
+        message = {
+          conversationId: conversation?._id,
+          senderId: accountUser.sub,
+          receiverId: person.sub,
+          type: "file",
+          text: image,
+        };
+      }
 
       socket.current.emit("sendMessage", message);
 
       await addMessage(message);
 
       setInputMessage("");
+      setImage("");
+      setFile();
       setNewMessageFlag((prev) => !prev);
     }
   };
@@ -103,6 +119,9 @@ const ChatBox = () => {
         inputMessage={inputMessage}
         setInputMessage={setInputMessage}
         setKeyCode={setKeyCode}
+        file={file}
+        setFile={setFile}
+        setImage={setImage}
       />
     </Container>
   );

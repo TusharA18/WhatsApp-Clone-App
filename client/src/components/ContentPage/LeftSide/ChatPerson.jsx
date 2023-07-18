@@ -18,6 +18,8 @@ const ChatPerson = ({ user }) => {
     deleteMessagesFlag,
   } = useContext(AccountContext);
 
+  const SERVER_URL = import.meta.env.VITE_REACT_SERVER_URL;
+
   useEffect(() => {
     const getConversationDetails = async () => {
       const data = await getConversation({
@@ -95,7 +97,11 @@ const ChatPerson = ({ user }) => {
           <h3>{handleTrim(user?.name)}</h3>
           <p>{message?.text && formatDate(message?.timestamp)}</p>
         </div>
-        <p>{message?.text && handleTrim(message?.text)}</p>
+        <p>
+          {message?.text?.includes(SERVER_URL)
+            ? "Media"
+            : message?.text && handleTrim(message?.text)}
+        </p>
       </div>
     </Conatiner>
   );
